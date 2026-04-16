@@ -1,0 +1,28 @@
+---
+import Base from '../../layouts/Base.astro';
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+
+// Получаем все .md файлы из content/blog/
+const posts = Object.values(
+  import.meta.glob('../../content/blog/*.md', { eager: true })
+) as any[];
+
+// Сортируем по дате (новые первые)
+posts.sort((a, b) => new Date(b.frontmatter.date).getTime() - new Date(a.frontmatter.date).getTime());
+---
+<Base title="Blog">
+  <h1>Blog</h1>
+  <div style="margin-top: 1.5rem;">
+    {posts.map((post) => (
+      <article style="margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid #eee;">
+        <time style="color: #888; font-size: 0.85rem;">{post.frontmatter.date}</time>
+        <h2 style="margin-top: 0.25rem;">
+          <a href={`${base}blog/${post.frontmatter.slug}`} style="color: #1a1a1a; text-decoration: none;">
+            {post.frontmatter.title}
+          </a>
+        </h2>
+        <p style="margin-top: 0.5rem; color: #555;">{post.frontmatter.description}</p>
+      </article>
+    ))}
+  </div>
+</Base>

@@ -1,0 +1,21 @@
+---
+import Base from '../layouts/Base.astro';
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+---
+<Base title="Home">
+  <h1>Welcome to CAASI.ai</h1>
+  <p style="margin-top: 1rem; font-size: 1.1rem; color: #555;">
+    AI-powered solutions for wellness businesses.
+  </p>
+  <div style="margin-top: 2rem;">
+    <h2>What we do</h2>
+    <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+      <li>Intelligent automation for fitness and wellness</li>
+      <li>AI assistants for client engagement</li>
+      <li>Data-driven insights for business growth</li>
+    </ul>
+  </div>
+  <div style="margin-top: 2rem;">
+    <a href={`${base}blog`} style="color: #2563eb;">Read our blog &rarr;</a>
+  </div>
+</Base>
