@@ -1,0 +1,31 @@
+backend:
+  name: github
+  repo: wellnessliving/astro-1st
+  branch: main
+
+media_folder: "public/images"
+public_folder: "/images"
+
+collections:
+  - name: "blog"
+    label: "Blog Posts"
+    folder: "src/content/blog"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "string" }
+      - { label: "Publish Date", name: "pubDate", widget: "date", format: "YYYY-MM-DD" }
+      - { label: "Author", name: "author", widget: "string", default: "Admin", required: false }
+      - { label: "Category", name: "category", widget: "select", options: ["General", "Technology", "Business", "Wellness"], default: "General", required: false }
+      - { label: "Featured Image", name: "image", widget: "image", required: false }
+      - { label: "Body", name: "body", widget: "markdown" }
+
+  - name: "pages"
+    label: "Pages"
+    files:
+      - label: "About"
+        name: "about"
+        file: "src/pages/about.astro"
+        fields:
+          - { label: "Body", name: "body", widget: "code", default_language: "html" }

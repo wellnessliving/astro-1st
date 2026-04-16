@@ -1,8 +1,10 @@
 ---
 title: "Why AI Matters for Wellness Businesses"
 slug: "why-ai-matters"
-date: "2026-04-10"
+pubDate: "2026-04-10"
 description: "How artificial intelligence is transforming the fitness and wellness industry."
+author: "Admin"
+category: "Technology"
 ---
 
 The wellness industry is evolving fast. Clients expect personalized experiences, instant responses, and seamless booking — and AI makes all of this possible without growing your team.

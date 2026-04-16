@@ -1,8 +1,10 @@
 ---
 title: "Building Our Stack: Astro + GitHub Pages"
 slug: "building-our-stack"
-date: "2026-04-16"
+pubDate: "2026-04-16"
 description: "Why we chose a static site generator over a traditional CMS for our company blog."
+author: "Admin"
+category: "Technology"
 ---
 
 When we set out to build the CAASI.ai website, we had a simple requirement: it should be fast, free to host, and easy to update.
