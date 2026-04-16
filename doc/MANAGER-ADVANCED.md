@@ -204,6 +204,98 @@ git push
 
 ---
 
+## Nested Navigation (Dropdown Menus + Sub-Pages)
+
+The site supports **nested navigation** — dropdown menus in the header and a sidebar on sub-pages.
+
+### How It Works
+
+- Items in `navigation.json` can have a `children` array
+- Items with children show a **dropdown menu on hover** in the header
+- When you visit a sub-page, a **sidebar** appears on the left with all sibling pages
+- **Breadcrumbs** show your current position (Home / Pricing / Starter)
+
+### Adding a Section with Sub-Pages
+
+#### Step 1: Update `navigation.json`
+
+```json
+[
+  { "label": "Home", "path": "/" },
+  {
+    "label": "Pricing",
+    "path": "/pricing/",
+    "children": [
+      { "label": "Starter", "path": "/pricing/starter/" },
+      { "label": "Professional", "path": "/pricing/professional/" },
+      { "label": "Enterprise", "path": "/pricing/enterprise/" }
+    ]
+  },
+  { "label": "Blog", "path": "/blog/" }
+]
+```
+
+#### Step 2: Create the parent page
+
+Create `src/content/pages/pricing.md` — this is the "overview" page shown when clicking the parent menu item.
+
+#### Step 3: Create sub-pages
+
+Create a folder and files:
+
+```
+src/content/pages/
+├── pricing.md                 ← Parent page (overview)
+└── pricing/                   ← Folder for sub-pages
+    ├── starter.md             ← /pricing/starter/
+    ├── professional.md        ← /pricing/professional/
+    └── enterprise.md          ← /pricing/enterprise/
+```
+
+Each sub-page is a regular `.md` file with frontmatter:
+
+```markdown
+---
+title: "Starter Plan"
+description: "Perfect for small studios"
+---
+
+Content here...
+```
+
+#### Step 4: Commit and push
+
+```bash
+git add -A
+git commit -m "Add pricing section with sub-pages"
+git push
+```
+
+### Adding a Sub-Page to an Existing Section
+
+1. Create the `.md` file in the appropriate folder (e.g. `src/content/pages/pricing/new-plan.md`)
+2. Add the item to the `children` array in `navigation.json`
+3. Commit and push
+
+### File Structure with Nested Pages
+
+```
+src/content/pages/
+├── about.md                   ← Flat page (no sub-pages)
+├── pricing.md                 ← Section overview
+├── pricing/
+│   ├── starter.md             ← Sub-page
+│   ├── professional.md        ← Sub-page
+│   └── enterprise.md          ← Sub-page
+├── services.md                ← Section overview
+└── services/
+    ├── scheduling.md           ← Sub-page
+    ├── payments.md             ← Sub-page
+    └── marketing.md            ← Sub-page
+```
+
+---
+
 ## Common Git Commands
 
 | Command | What it does |
@@ -275,20 +367,29 @@ git push
 astro-1st/
 ├── src/
 │   ├── content/
-│   │   ├── pages/          ← YOUR PAGES (edit these)
+│   │   ├── pages/              ← YOUR PAGES (edit these)
 │   │   │   ├── about.md
+│   │   │   ├── pricing.md      ← Section overview
+│   │   │   ├── pricing/        ← Sub-pages folder
+│   │   │   │   ├── starter.md
+│   │   │   │   ├── professional.md
+│   │   │   │   └── enterprise.md
 │   │   │   ├── services.md
+│   │   │   ├── services/
+│   │   │   │   ├── scheduling.md
+│   │   │   │   ├── payments.md
+│   │   │   │   └── marketing.md
 │   │   │   ├── faq.md
 │   │   │   └── contact.md
-│   │   └── blog/           ← YOUR BLOG POSTS (edit these)
+│   │   └── blog/               ← YOUR BLOG POSTS (edit these)
 │   │       ├── first-post.md
 │   │       └── second-post.md
 │   ├── data/
-│   │   └── navigation.json ← MENU CONFIG (edit this)
-│   ├── layouts/             ← DO NOT EDIT
-│   └── pages/               ← DO NOT EDIT
+│   │   └── navigation.json    ← MENU CONFIG (edit this — supports children)
+│   ├── layouts/                ← DO NOT EDIT
+│   └── pages/                  ← DO NOT EDIT
 ├── public/
-│   ├── images/              ← YOUR IMAGES (add here)
-│   └── styles.css           ← DO NOT EDIT
-└── doc/                     ← Documentation (you are here)
+│   ├── images/                 ← YOUR IMAGES (add here)
+│   └── styles.css              ← DO NOT EDIT
+└── doc/                        ← Documentation (you are here)
 ```

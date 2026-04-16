@@ -205,6 +205,98 @@ git push
 
 ---
 
+## Вложенная навигация (выпадающие меню + подстраницы)
+
+Сайт поддерживает **вложенную навигацию** — выпадающие меню в шапке и боковую панель на подстраницах.
+
+### Как это работает
+
+- Пункты в `navigation.json` могут содержать массив `children`
+- Пункты с `children` показывают **выпадающее меню при наведении** в шапке
+- На подстраницах слева появляется **боковая панель** с навигацией по разделу
+- **Хлебные крошки** показывают текущую позицию (Home / Pricing / Starter)
+
+### Добавление раздела с подстраницами
+
+#### Шаг 1: Обновите `navigation.json`
+
+```json
+[
+  { "label": "Home", "path": "/" },
+  {
+    "label": "Pricing",
+    "path": "/pricing/",
+    "children": [
+      { "label": "Starter", "path": "/pricing/starter/" },
+      { "label": "Professional", "path": "/pricing/professional/" },
+      { "label": "Enterprise", "path": "/pricing/enterprise/" }
+    ]
+  },
+  { "label": "Blog", "path": "/blog/" }
+]
+```
+
+#### Шаг 2: Создайте родительскую страницу
+
+Создайте `src/content/pages/pricing.md` — это страница-обзор, которая открывается при клике на основной пункт меню.
+
+#### Шаг 3: Создайте подстраницы
+
+Создайте папку и файлы:
+
+```
+src/content/pages/
+├── pricing.md                 ← Родительская страница (обзор)
+└── pricing/                   ← Папка для подстраниц
+    ├── starter.md             ← /pricing/starter/
+    ├── professional.md        ← /pricing/professional/
+    └── enterprise.md          ← /pricing/enterprise/
+```
+
+Каждая подстраница — обычный `.md` файл с frontmatter:
+
+```markdown
+---
+title: "Тариф Starter"
+description: "Идеально для небольших студий"
+---
+
+Контент здесь...
+```
+
+#### Шаг 4: Закоммитьте и отправьте
+
+```bash
+git add -A
+git commit -m "Add pricing section with sub-pages"
+git push
+```
+
+### Добавление подстраницы в существующий раздел
+
+1. Создайте `.md` файл в соответствующей папке (например, `src/content/pages/pricing/new-plan.md`)
+2. Добавьте пункт в массив `children` в `navigation.json`
+3. Закоммитьте и отправьте
+
+### Структура файлов с вложенными страницами
+
+```
+src/content/pages/
+├── about.md                   ← Обычная страница (без подстраниц)
+├── pricing.md                 ← Обзор раздела
+├── pricing/
+│   ├── starter.md             ← Подстраница
+│   ├── professional.md        ← Подстраница
+│   └── enterprise.md          ← Подстраница
+├── services.md                ← Обзор раздела
+└── services/
+    ├── scheduling.md           ← Подстраница
+    ├── payments.md             ← Подстраница
+    └── marketing.md            ← Подстраница
+```
+
+---
+
 ## Основные команды Git
 
 | Команда | Что делает |
@@ -276,20 +368,29 @@ git push
 astro-1st/
 ├── src/
 │   ├── content/
-│   │   ├── pages/          ← ВАШИ СТРАНИЦЫ (редактируйте)
+│   │   ├── pages/              ← ВАШИ СТРАНИЦЫ (редактируйте)
 │   │   │   ├── about.md
+│   │   │   ├── pricing.md      ← Обзор раздела
+│   │   │   ├── pricing/        ← Папка подстраниц
+│   │   │   │   ├── starter.md
+│   │   │   │   ├── professional.md
+│   │   │   │   └── enterprise.md
 │   │   │   ├── services.md
+│   │   │   ├── services/
+│   │   │   │   ├── scheduling.md
+│   │   │   │   ├── payments.md
+│   │   │   │   └── marketing.md
 │   │   │   ├── faq.md
 │   │   │   └── contact.md
-│   │   └── blog/           ← ВАШИ ПОСТЫ (редактируйте)
+│   │   └── blog/               ← ВАШИ ПОСТЫ (редактируйте)
 │   │       ├── first-post.md
 │   │       └── second-post.md
 │   ├── data/
-│   │   └── navigation.json ← НАСТРОЙКА МЕНЮ (редактируйте)
-│   ├── layouts/             ← НЕ РЕДАКТИРОВАТЬ
-│   └── pages/               ← НЕ РЕДАКТИРОВАТЬ
+│   │   └── navigation.json    ← НАСТРОЙКА МЕНЮ (поддерживает children)
+│   ├── layouts/                ← НЕ РЕДАКТИРОВАТЬ
+│   └── pages/                  ← НЕ РЕДАКТИРОВАТЬ
 ├── public/
-│   ├── images/              ← ВАШИ ИЗОБРАЖЕНИЯ (добавляйте сюда)
-│   └── styles.css           ← НЕ РЕДАКТИРОВАТЬ
-└── doc/                     ← Документация (вы здесь)
+│   ├── images/                 ← ВАШИ ИЗОБРАЖЕНИЯ (добавляйте сюда)
+│   └── styles.css              ← НЕ РЕДАКТИРОВАТЬ
+└── doc/                        ← Документация (вы здесь)
 ```
