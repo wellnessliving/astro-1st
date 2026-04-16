@@ -2,16 +2,11 @@
 import Base from '../../layouts/Base.astro';
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 
-// Динамический роутинг: генерируем страницу для каждого .md файла
 export async function getStaticPaths() {
   const modules = import.meta.glob('../../content/blog/*.md', { eager: true });
-
   return Object.entries(modules).map(([filepath, post]: [string, any]) => {
     const slug = post.frontmatter.slug || filepath.split('/').pop()?.replace('.md', '');
-    return {
-      params: { slug },
-      props: { post },
-    };
+    return { params: { slug }, props: { post } };
   });
 }
 
@@ -19,14 +14,14 @@ const { post } = Astro.props;
 const { Content } = post;
 ---
 <Base title={post.frontmatter.title}>
-  <article>
-    <time style="color: #888; font-size: 0.85rem;">{post.frontmatter.date}</time>
-    <h1 style="margin-top: 0.25rem;">{post.frontmatter.title}</h1>
-    <div style="margin-top: 1.5rem; line-height: 1.8;">
-      <Content />
+  <div class="post-header">
+    <div class="container">
+      <time>{post.frontmatter.date || post.frontmatter.pubDate}</time>
+      <h1>{post.frontmatter.title}</h1>
     </div>
-    <div style="margin-top: 2rem;">
-      <a href={`${base}blog`} style="color: #2563eb;">&larr; Back to blog</a>
-    </div>
-  </article>
+  </div>
+  <div class="post-content">
+    <Content />
+    <a href={`${base}blog/`} class="back-link">&larr; Back to Blog</a>
+  </div>
 </Base>

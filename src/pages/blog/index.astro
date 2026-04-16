@@ -2,29 +2,29 @@
 import Base from '../../layouts/Base.astro';
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 
-// Получаем все .md файлы из content/blog/
 const modules = import.meta.glob('../../content/blog/*.md', { eager: true });
 const posts = Object.entries(modules).map(([filepath, post]: [string, any]) => ({
   ...post,
   slug: post.frontmatter.slug || filepath.split('/').pop()?.replace('.md', ''),
 }));
-
-// Сортируем по дате (новые первые)
-posts.sort((a, b) => new Date(b.frontmatter.date || 0).getTime() - new Date(a.frontmatter.date || 0).getTime());
+posts.sort((a, b) => new Date(b.frontmatter.date || b.frontmatter.pubDate || 0).getTime() - new Date(a.frontmatter.date || a.frontmatter.pubDate || 0).getTime());
 ---
 <Base title="Blog">
-  <h1>Blog</h1>
-  <div style="margin-top: 1.5rem;">
-    {posts.map((post) => (
-      <article style="margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid #eee;">
-        <time style="color: #888; font-size: 0.85rem;">{post.frontmatter.date}</time>
-        <h2 style="margin-top: 0.25rem;">
-          <a href={`${base}blog/${post.slug}`} style="color: #1a1a1a; text-decoration: none;">
-            {post.frontmatter.title}
-          </a>
-        </h2>
-        <p style="margin-top: 0.5rem; color: #555;">{post.frontmatter.description}</p>
-      </article>
-    ))}
-  </div>
+  <section class="section">
+    <div class="container">
+      <h1 class="section-title" style="margin-bottom: 48px;">Blog</h1>
+      <div class="blog-cards">
+        {posts.map((post) => (
+          <div class="blog-card">
+            <div class="blog-card-body">
+              <time>{post.frontmatter.date || post.frontmatter.pubDate}</time>
+              <h3><a href={`${base}blog/${post.slug}/`}>{post.frontmatter.title}</a></h3>
+              <p>{post.frontmatter.description}</p>
+              <a href={`${base}blog/${post.slug}/`} class="read-more">Read More &rarr;</a>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
 </Base>

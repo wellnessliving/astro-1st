@@ -1,21 +1,87 @@
 ---
 import Base from '../layouts/Base.astro';
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+
+const modules = import.meta.glob('../content/blog/*.md', { eager: true });
+const posts = Object.entries(modules).map(([filepath, post]: [string, any]) => ({
+  ...post,
+  slug: post.frontmatter.slug || filepath.split('/').pop()?.replace('.md', ''),
+}));
+posts.sort((a, b) => new Date(b.frontmatter.date || b.frontmatter.pubDate || 0).getTime() - new Date(a.frontmatter.date || a.frontmatter.pubDate || 0).getTime());
+const latestPosts = posts.slice(0, 3);
 ---
 <Base title="Home">
-  <h1>Welcome to CAASI.ai</h1>
-  <p style="margin-top: 1rem; font-size: 1.1rem; color: #555;">
-    AI-powered solutions for wellness businesses.
-  </p>
-  <div style="margin-top: 2rem;">
-    <h2>What we do</h2>
-    <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
-      <li>Intelligent automation for fitness and wellness</li>
-      <li>AI assistants for client engagement</li>
-      <li>Data-driven insights for business growth</li>
-    </ul>
-  </div>
-  <div style="margin-top: 2rem;">
-    <a href={`${base}blog`} style="color: #2563eb;">Read our blog &rarr;</a>
-  </div>
+  <section class="hero">
+    <div class="container">
+      <h1>Grow Your Wellness Business<br/>With Smart Technology</h1>
+      <p>All-in-one platform for scheduling, payments, marketing, and analytics — built for fitness studios, spas, and wellness centers.</p>
+      <a href={`${base}about/`} class="btn">Learn More &rarr;</a>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container">
+      <h2 class="section-title">What We Offer</h2>
+      <p class="section-subtitle">Everything you need to run and grow your wellness business, all in one place.</p>
+      <div class="cards">
+        <div class="card">
+          <div class="card-icon">📅</div>
+          <h3>Online Scheduling</h3>
+          <p>Let clients book classes, appointments, and services 24/7 with real-time availability and automated reminders.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">💳</div>
+          <h3>Payments & POS</h3>
+          <p>Accept payments seamlessly — memberships, packages, drop-ins, and retail. Integrated point-of-sale included.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">📊</div>
+          <h3>Analytics & Reports</h3>
+          <p>Track revenue, retention, attendance, and trends with powerful dashboards and AI-driven insights.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">📱</div>
+          <h3>Mobile App</h3>
+          <p>Your branded mobile app for clients — booking, payments, notifications, and engagement in their pocket.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">📧</div>
+          <h3>Marketing Automation</h3>
+          <p>Email campaigns, SMS reminders, referral programs, and automated follow-ups to keep clients coming back.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🤖</div>
+          <h3>AI Assistant</h3>
+          <p>Intelligent recommendations for pricing, scheduling optimization, and client retention powered by machine learning.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Latest from the Blog</h2>
+      <p class="section-subtitle">Insights, tips, and updates from the WellnessLiving team.</p>
+      <div class="blog-cards">
+        {latestPosts.map((post) => (
+          <div class="blog-card">
+            <div class="blog-card-body">
+              <time>{post.frontmatter.date || post.frontmatter.pubDate}</time>
+              <h3><a href={`${base}blog/${post.slug}/`}>{post.frontmatter.title}</a></h3>
+              <p>{post.frontmatter.description}</p>
+              <a href={`${base}blog/${post.slug}/`} class="read-more">Read More &rarr;</a>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section" id="contact">
+    <div class="container">
+      <h2>Ready to Transform Your Business?</h2>
+      <p>Join thousands of wellness businesses already using our platform to grow and thrive.</p>
+      <a href="#" class="btn">Get Started Free</a>
+    </div>
+  </section>
 </Base>
