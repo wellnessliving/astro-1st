@@ -3,7 +3,7 @@ backend:
   repo: wellnessliving/astro-1st
   branch: main
   base_url: https://api.netlify.com
-  auth_endpoint: auth
+  site_id: mellow-clafoutis-6c8f43.netlify.app
 
 media_folder: "public/images"
 public_folder: "/images"
