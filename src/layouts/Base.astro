@@ -1,17 +1,55 @@
 ---
 import navItems from '../data/navigation.json';
 
+interface NavItem {
+  label: string;
+  path: string;
+  children?: NavItem[];
+}
+
 interface Props {
   title: string;
   bodyClass?: string;
+  section?: string;
 }
-const { title, bodyClass = '' } = Astro.props;
+const { title, bodyClass = '', section = '' } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 const currentPath = Astro.url.pathname;
 
 // Last nav item becomes CTA button
-const menuItems = navItems.slice(0, -1);
-const ctaItem = navItems[navItems.length - 1];
+const menuItems = (navItems as NavItem[]).slice(0, -1);
+const ctaItem = (navItems as NavItem[])[navItems.length - 1];
+
+// Find current section for sidebar
+function findSection(items: NavItem[], path: string): NavItem | null {
+  for (const item of items) {
+    if (item.children) {
+      const parentPath = item.path.replace(/\//g, '');
+      if (path.includes(parentPath)) return item;
+    }
+  }
+  return null;
+}
+const currentSection = section
+  ? (navItems as NavItem[]).find((i: NavItem) => i.path.replace(/\//g, '') === section.replace(/\//g, ''))
+  : findSection(navItems as NavItem[], currentPath);
+const hasSidebar = currentSection?.children && currentSection.children.length > 0;
+
+function makeHref(itemPath: string): string {
+  if (itemPath === '/') return base;
+  return `${base}${itemPath.replace(/^\//, '')}`;
+}
+
+function isActive(itemPath: string): boolean {
+  if (itemPath === '/') return currentPath === base;
+  return currentPath.includes(itemPath.replace(/\//g, ''));
+}
+
+function isParentActive(item: NavItem): boolean {
+  if (isActive(item.path)) return true;
+  if (item.children) return item.children.some(c => isActive(c.path));
+  return false;
+}
 ---
 <!doctype html>
 <html lang="en">
@@ -27,14 +65,25 @@ const ctaItem = navItems[navItems.length - 1];
       <a href={`${base}`} class="site-logo">Wellness<span>Living</span></a>
       <nav class="site-nav" id="main-nav">
         {menuItems.map((item) => {
-          const href = item.path === '/' ? base : `${base}${item.path.replace(/^\//, '')}`;
-          const isActive = item.path === '/'
-            ? currentPath === base
-            : currentPath.includes(item.path.replace(/\//g, ''));
-          return <a href={href} class={isActive ? 'active' : ''}>{item.label}</a>;
+          if (item.children && item.children.length > 0) {
+            return (
+              <div class={`nav-dropdown ${isParentActive(item) ? 'active' : ''}`}>
+                <a href={makeHref(item.path)} class={`nav-dropdown-trigger ${isParentActive(item) ? 'active' : ''}`}>
+                  {item.label}
+                  <svg class="dropdown-arrow" width="10" height="6" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+                </a>
+                <div class="nav-dropdown-menu">
+                  {item.children.map((child) => (
+                    <a href={makeHref(child.path)} class={isActive(child.path) ? 'active' : ''}>{child.label}</a>
+                  ))}
+                </div>
+              </div>
+            );
+          }
+          return <a href={makeHref(item.path)} class={isActive(item.path) ? 'active' : ''}>{item.label}</a>;
         })}
         {ctaItem && (
-          <a href={`${base}${ctaItem.path.replace(/^\//, '')}`} class="btn-cta">{ctaItem.label}</a>
+          <a href={makeHref(ctaItem.path)} class="btn-cta">{ctaItem.label}</a>
         )}
       </nav>
       <button class="nav-toggle" id="nav-toggle" aria-label="Menu">
@@ -43,7 +92,43 @@ const ctaItem = navItems[navItems.length - 1];
     </div>
   </header>
 
-  <slot />
+  {hasSidebar ? (
+    <div class="page-with-sidebar">
+      <aside class="page-sidebar">
+        <h4 class="sidebar-title">{currentSection!.label}</h4>
+        <ul class="sidebar-nav">
+          <li>
+            <a href={makeHref(currentSection!.path)} class={currentPath === makeHref(currentSection!.path) ? 'active' : ''}>
+              Overview
+            </a>
+          </li>
+          {currentSection!.children!.map((child) => (
+            <li>
+              <a href={makeHref(child.path)} class={currentPath.endsWith(child.path.replace(/\/$/, '/')) || currentPath.endsWith(child.path.replace(/\/$/, '')) ? 'active' : ''}>
+                {child.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </aside>
+      <main class="page-main">
+        <nav class="breadcrumbs">
+          <a href={base}>Home</a>
+          <span class="breadcrumb-sep">/</span>
+          <a href={makeHref(currentSection!.path)}>{currentSection!.label}</a>
+          {currentPath !== makeHref(currentSection!.path) && (
+            <>
+              <span class="breadcrumb-sep">/</span>
+              <span class="breadcrumb-current">{title}</span>
+            </>
+          )}
+        </nav>
+        <slot />
+      </main>
+    </div>
+  ) : (
+    <slot />
+  )}
 
   <footer class="site-footer">
     <div class="container">

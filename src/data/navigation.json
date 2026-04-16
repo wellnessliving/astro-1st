@@ -1,7 +1,24 @@
 [
   { "label": "Home", "path": "/" },
   { "label": "About", "path": "/about/" },
-  { "label": "Services", "path": "/services/" },
+  {
+    "label": "Services",
+    "path": "/services/",
+    "children": [
+      { "label": "Scheduling", "path": "/services/scheduling/" },
+      { "label": "Payments", "path": "/services/payments/" },
+      { "label": "Marketing", "path": "/services/marketing/" }
+    ]
+  },
+  {
+    "label": "Pricing",
+    "path": "/pricing/",
+    "children": [
+      { "label": "Starter", "path": "/pricing/starter/" },
+      { "label": "Professional", "path": "/pricing/professional/" },
+      { "label": "Enterprise", "path": "/pricing/enterprise/" }
+    ]
+  },
   { "label": "FAQ", "path": "/faq/" },
   { "label": "Contact", "path": "/contact/" },
   { "label": "Blog", "path": "/blog/" }
