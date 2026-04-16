@@ -375,7 +375,17 @@ img { max-width: 100%; height: auto; }
   box-shadow: var(--shadow);
   padding: 8px 0;
   z-index: 200;
-  margin-top: 8px;
+  padding-top: 16px;
+  margin-top: 0;
+}
+/* Invisible bridge so hover doesn't break when moving to dropdown */
+.nav-dropdown-menu::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 0;
+  right: 0;
+  height: 16px;
 }
 .nav-dropdown:hover .nav-dropdown-menu { display: block; }
 .nav-dropdown-menu a {
