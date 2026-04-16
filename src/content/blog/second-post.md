@@ -7,13 +7,17 @@ author: "Admin"
 category: "Technology"
 ---
 
-When we set out to build the CAASI.ai website, we had a simple requirement: it should be fast, free to host, and easy to update.
+![Code on screen](https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=400&fit=crop)
+
+When we set out to build the WellnessLiving website, we had a simple requirement: it should be fast, free to host, and easy to update.
 
 ## Why not WordPress?
 
 WordPress is powerful, but it's overkill for a company site with a blog. It needs a server, a database, regular security updates, and plugin management. That's operational overhead we don't need.
 
 ## Our choice: Astro
+
+![Static site](https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=350&fit=crop)
 
 Astro is a static site generator. We write pages in a simple template language and blog posts in Markdown. Astro compiles everything into plain HTML files.
 

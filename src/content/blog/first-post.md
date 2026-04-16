@@ -7,9 +7,13 @@ author: "Admin"
 category: "Technology"
 ---
 
+![AI and wellness](https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&h=400&fit=crop)
+
 The wellness industry is evolving fast. Clients expect personalized experiences, instant responses, and seamless booking — and AI makes all of this possible without growing your team.
 
 ## Three ways AI helps today
+
+![Smart scheduling](https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=800&h=350&fit=crop)
 
 **1. Smart scheduling.** AI learns client preferences and suggests optimal times, reducing no-shows by up to 30%.
 

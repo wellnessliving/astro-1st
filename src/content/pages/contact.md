@@ -3,6 +3,8 @@ title: "Contact Us"
 description: "Get in touch with the WellnessLiving team"
 ---
 
+![Contact us](https://images.unsplash.com/photo-1423666639041-f56000c27a9a?w=800&h=350&fit=crop)
+
 ## We'd Love to Hear From You
 
 Whether you have a question about our platform, need help with your account, or want to explore how WellnessLiving can help your business — we're here for you.
@@ -29,6 +31,8 @@ Existing customer? Our support team is available 24/7.
 - **Live Chat:** Available in-app and on our website
 
 ## Office
+
+![Office building](https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=350&fit=crop)
 
 WellnessLiving  
 123 Innovation Drive, Suite 400  

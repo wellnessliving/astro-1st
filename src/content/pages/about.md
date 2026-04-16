@@ -3,9 +3,13 @@ title: "About Us"
 description: "Learn more about WellnessLiving"
 ---
 
+![Team working together](https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&h=400&fit=crop)
+
 ## Who We Are
 
 WellnessLiving is a leading all-in-one business management platform designed specifically for the fitness, wellness, and beauty industries. We help thousands of businesses streamline operations, engage clients, and grow revenue.
+
+![Modern office](https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=350&fit=crop)
 
 ## Our Mission
 
@@ -19,5 +23,7 @@ To empower every wellness business — from yoga studios and gyms to spas and sa
 - **24/7 Support** — Dedicated team ready to help whenever you need it.
 
 ## Our Team
+
+![Team photo](https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&h=400&fit=crop)
 
 We're a passionate team of engineers, designers, and wellness industry experts based across North America. We use our own platform every day and obsess over making it better for our customers.
