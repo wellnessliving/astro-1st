@@ -16,23 +16,34 @@
 ```
 astro/
 ├── public/
-│   ├── styles.css              # Global CSS (WP-style theme)
+│   ├── styles.css              # Global CSS (WP-style theme + dropdown/sidebar)
 │   ├── images/                 # Static images (uploaded by managers)
 │   └── favicon.svg
 ├── src/
 │   ├── layouts/
-│   │   └── Base.astro          # Main layout: header, footer, nav
+│   │   └── Base.astro          # Main layout: header (dropdowns), sidebar, footer
 │   ├── pages/
 │   │   ├── index.astro         # Home page (hero, services, blog preview, CTA)
-│   │   ├── [page].astro        # Dynamic page renderer (reads from content/pages/*.md)
+│   │   ├── [...page].astro     # Catch-all page renderer (flat + nested pages)
 │   │   └── blog/
 │   │       ├── index.astro     # Blog listing (WP-style cards + sidebar)
 │   │       └── [slug].astro    # Blog post renderer (reads from content/blog/*.md)
 │   ├── content/
-│   │   ├── pages/              # ← Manager-editable pages (about.md, services.md, etc.)
+│   │   ├── pages/              # ← Manager-editable pages
+│   │   │   ├── about.md
+│   │   │   ├── pricing.md      #   Section overview
+│   │   │   ├── pricing/        #   Sub-pages (dropdown items)
+│   │   │   │   ├── starter.md
+│   │   │   │   ├── professional.md
+│   │   │   │   └── enterprise.md
+│   │   │   ├── services.md
+│   │   │   └── services/
+│   │   │       ├── scheduling.md
+│   │   │       ├── payments.md
+│   │   │       └── marketing.md
 │   │   └── blog/               # ← Manager-editable blog posts
 │   └── data/
-│       └── navigation.json     # ← Manager-editable navigation menu
+│       └── navigation.json     # ← Manager-editable nav (supports children)
 ├── doc/                        # Documentation (this folder)
 ├── astro.config.mjs            # Astro config (site URL, base path)
 ├── package.json
@@ -48,10 +59,38 @@ astro/
 - `src/layouts/Base.astro` reads this JSON and renders the nav bar.
 - The **last item** in the array becomes the CTA button (blue).
 - Active page is highlighted automatically based on current URL.
+- Items with a `children` array render as **dropdown menus** on hover.
+
+#### Navigation JSON Schema
+
+```json
+// Simple item (no dropdown):
+{ "label": "About", "path": "/about/" }
+
+// Item with dropdown:
+{
+  "label": "Pricing",
+  "path": "/pricing/",       // Parent page (overview)
+  "children": [
+    { "label": "Starter", "path": "/pricing/starter/" },
+    { "label": "Professional", "path": "/pricing/professional/" }
+  ]
+}
+```
+
+#### Dropdown & Sidebar Architecture
+
+- **Header dropdown:** CSS hover-based (`.nav-dropdown` / `.nav-dropdown-menu`), no JS required.
+- **Page sidebar:** `Base.astro` auto-detects if the current page belongs to a section with `children`. If yes, it renders `<aside class="page-sidebar">` with links to all children + "Overview" (parent page).
+- **Breadcrumbs:** Auto-generated from current URL path segments.
+- **Section detection:** `findSection()` in `Base.astro` matches current URL path against nav items.
+- **Mobile:** Dropdown menus expand inline in the mobile nav. Sidebar collapses above the content.
 
 ### Pages (non-blog)
-- `.md` files in `src/content/pages/` are rendered by `src/pages/[page].astro`.
-- The filename becomes the URL slug: `services.md` → `/services/`.
+- `.md` files in `src/content/pages/` (and subdirectories) are rendered by `src/pages/[...page].astro`.
+- **Flat pages:** `about.md` → `/about/`
+- **Nested pages:** `pricing/starter.md` → `/pricing/starter/`
+- The catch-all `[...page].astro` uses `import.meta.glob('../content/pages/**/*.md')` to discover all pages recursively.
 - Each `.md` file needs frontmatter with `title` and `description`.
 
 ### Blog Posts
@@ -130,6 +169,47 @@ All styles are in `public/styles.css`. Key CSS classes:
 | `.site-header` | Sticky header with nav |
 | `.site-footer` | Dark footer with grid layout |
 | `.post-content` | Blog post / page body (760px max) |
+| `.nav-dropdown` | Wrapper for dropdown menu item |
+| `.nav-dropdown-trigger` | Clickable link with arrow indicator |
+| `.nav-dropdown-menu` | Dropdown panel (hidden, shown on hover) |
+| `.page-with-sidebar` | Grid layout: 260px sidebar + content |
+| `.page-sidebar` | Left sidebar with section navigation |
+| `.sidebar-nav` | List of sidebar links |
+| `.breadcrumbs` | Breadcrumb navigation trail |
+
+## Adding a New Section with Sub-Pages (Developer Notes)
+
+When a manager creates a new section with sub-pages:
+
+1. They add `.md` files in `src/content/pages/section-name/`
+2. They add `children` to `navigation.json`
+3. No code changes needed — `[...page].astro` catches all nested paths automatically
+
+**How the catch-all route works:**
+
+```
+[...page].astro
+  └── getStaticPaths()
+       └── import.meta.glob('../content/pages/**/*.md')
+            └── Extracts relative path → splits into segments → joins as slug
+```
+
+**How sidebar detection works:**
+
+```
+Base.astro
+  └── findSection(navItems, currentPath)
+       └── Iterates nav items with children
+            └── Matches parent path segment against current URL
+                 └── If match → renders sidebar + breadcrumbs
+```
+
+**Key implementation files:**
+- `src/layouts/Base.astro:26-33` — `findSection()` logic
+- `src/layouts/Base.astro:70-89` — dropdown HTML rendering
+- `src/layouts/Base.astro:97-124` — sidebar + breadcrumbs conditional rendering
+- `src/pages/[...page].astro:6-18` — catch-all `getStaticPaths()`
+- `public/styles.css` — `.nav-dropdown*`, `.page-with-sidebar`, `.page-sidebar`, `.breadcrumbs`
 
 ## Markdown Features Supported
 

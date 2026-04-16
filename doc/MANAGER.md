@@ -12,6 +12,7 @@ You only need a GitHub account and a web browser.
 | Add a new page (e.g. Pricing) | Easy | 5 min |
 | Add/remove menu items | Easy | 1 min |
 | Add images to pages | Easy | 2 min |
+| Add a dropdown menu with sub-pages | Medium | 10 min |
 | Change page structure/design | Need developer | - |
 
 ## Where Content Lives
@@ -21,17 +22,26 @@ All content is in the GitHub repository: https://github.com/wellnessliving/astro
 ```
 src/
 ├── content/
-│   ├── pages/          ← Website pages (About, Services, FAQ, Contact)
+│   ├── pages/              ← Website pages
 │   │   ├── about.md
-│   │   ├── services.md
+│   │   ├── services.md     ← Section overview
+│   │   ├── services/       ← Sub-pages folder
+│   │   │   ├── scheduling.md
+│   │   │   ├── payments.md
+│   │   │   └── marketing.md
+│   │   ├── pricing.md      ← Section overview
+│   │   ├── pricing/        ← Sub-pages folder
+│   │   │   ├── starter.md
+│   │   │   ├── professional.md
+│   │   │   └── enterprise.md
 │   │   ├── faq.md
 │   │   └── contact.md
-│   └── blog/           ← Blog posts
+│   └── blog/               ← Blog posts
 │       ├── first-post.md
 │       ├── second-post.md
 │       └── my-post.md
 └── data/
-    └── navigation.json ← Menu items
+    └── navigation.json     ← Menu items (supports dropdowns)
 ```
 
 ---
@@ -161,6 +171,66 @@ $99/month. Everything in Starter plus marketing and analytics.
 5. Done! The new page appears in the menu in ~1 minute.
 
 **Note:** The last item in the list becomes the blue CTA button.
+
+---
+
+## Task 3b: Add a Dropdown Menu with Sub-Pages
+
+You can create sections with **dropdown menus** in the header. When visitors click a sub-page, they also see a **sidebar** for easy navigation within the section.
+
+### Step A: Create sub-page files
+
+1. Go to https://github.com/wellnessliving/astro-1st/tree/main/src/content/pages
+2. Click **"Add file"** → **"Create new file"**
+3. Enter filename with a folder: `pricing/starter.md` (GitHub auto-creates the folder)
+4. Paste the template:
+
+```markdown
+---
+title: "Starter Plan"
+description: "Perfect for small studios"
+---
+
+Your sub-page content here.
+```
+
+5. Click **"Commit changes"**
+6. Repeat for each sub-page (e.g. `pricing/professional.md`, `pricing/enterprise.md`)
+
+### Step B: Add dropdown to the menu
+
+1. Open `src/data/navigation.json`
+2. Add `children` array to the menu item:
+
+```json
+[
+  { "label": "Home", "path": "/" },
+  {
+    "label": "Pricing",
+    "path": "/pricing/",
+    "children": [
+      { "label": "Starter", "path": "/pricing/starter/" },
+      { "label": "Professional", "path": "/pricing/professional/" },
+      { "label": "Enterprise", "path": "/pricing/enterprise/" }
+    ]
+  },
+  { "label": "Blog", "path": "/blog/" }
+]
+```
+
+3. Click **"Commit changes"**
+
+### What you get
+
+- **Header:** hovering over "Pricing" shows a dropdown with Starter, Professional, Enterprise
+- **Sub-pages:** a sidebar on the left shows all pages in the section
+- **Breadcrumbs:** visitors see Home / Pricing / Starter at the top
+
+### Important rules
+
+- The parent page (`pricing.md`) must exist — it becomes the "Overview" in the sidebar
+- Sub-page files go into a **folder** with the same name (`pricing/starter.md`)
+- The `path` in `children` must match: folder name + filename → `/pricing/starter/`
 
 ---
 
