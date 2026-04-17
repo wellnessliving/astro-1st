@@ -57,7 +57,7 @@ Static corporate website for WellnessLiving built with **Astro 6.x**, hosted on 
 │   ├── MANAGER.md / .RU.md       # Basic guide (GitHub UI workflow)
 │   ├── MANAGER-ADVANCED.md / .RU.md  # Advanced guide (VS Code + Git)
 │   ├── DEVELOPER.md / .RU.md     # Technical reference
-│   └── README-START-HERE.md / .RU.md # READ FIRST — implementation report, risks, architecture
+│   └── 1.IMPORTANT-START-HERE.md / .RU.md # READ FIRST — implementation report, risks, architecture
 ├── CLAUDE.md                     # This file
 └── AGENTS.md                     # OpenCode/Agentic AI context
 ```

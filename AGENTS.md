@@ -180,7 +180,7 @@ All in `doc/` folder, bilingual (EN + RU):
 - `MANAGER.md` — basic content management (GitHub web UI)
 - `MANAGER-ADVANCED.md` — advanced workflow (VS Code + Git)
 - `DEVELOPER.md` — technical reference
-- `README-START-HERE.md` — READ FIRST — implementation report, risks, architecture
+- `1.IMPORTANT-START-HERE.md` — READ FIRST — implementation report, risks, architecture
 
 ## Testing Changes
 
