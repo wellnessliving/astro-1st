@@ -168,9 +168,45 @@ function isParentActive(item: NavItem): boolean {
   </footer>
 
   <script is:inline>
-    document.getElementById('nav-toggle')?.addEventListener('click', () => {
-      document.getElementById('main-nav')?.classList.toggle('open');
-    });
+    (function() {
+      const toggle = document.getElementById('nav-toggle');
+      const nav = document.getElementById('main-nav');
+      if (!toggle || !nav) return;
+
+      function closeMenu() {
+        nav.classList.remove('open');
+        toggle.classList.remove('open');
+        nav.querySelectorAll('.nav-dropdown.mobile-open').forEach(d => d.classList.remove('mobile-open'));
+      }
+
+      toggle.addEventListener('click', () => {
+        const opening = !nav.classList.contains('open');
+        if (opening) { nav.classList.add('open'); toggle.classList.add('open'); }
+        else closeMenu();
+      });
+
+      // Tap-to-toggle dropdowns on mobile
+      nav.querySelectorAll('.nav-dropdown-trigger').forEach(trigger => {
+        trigger.addEventListener('click', (e) => {
+          if (window.innerWidth > 768) return;
+          e.preventDefault();
+          trigger.closest('.nav-dropdown').classList.toggle('mobile-open');
+        });
+      });
+
+      // Close on nav link click
+      nav.querySelectorAll('a:not(.nav-dropdown-trigger)').forEach(a => {
+        a.addEventListener('click', closeMenu);
+      });
+
+      // Close on outside click
+      document.addEventListener('click', (e) => {
+        if (nav.classList.contains('open') && !nav.contains(e.target) && !toggle.contains(e.target)) closeMenu();
+      });
+
+      // Close on ESC
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
+    })();
   </script>
 </body>
 </html>
