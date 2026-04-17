@@ -83,8 +83,8 @@ img { max-width: 100%; height: auto; }
 /* Mobile nav toggle */
 .nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: 8px; z-index: 1001; }
 .nav-toggle span {
-  display: block; width: 24px; height: 2px;
-  background: var(--text); margin: 5px 0; transition: 0.3s;
+  display: block; width: 24px; height: 3px;
+  background: var(--primary); margin: 5px 0; transition: 0.3s;
 }
 .nav-toggle.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
 .nav-toggle.open span:nth-child(2) { opacity: 0; }
