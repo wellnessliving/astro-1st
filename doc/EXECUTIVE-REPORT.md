@@ -80,9 +80,24 @@ During implementation, option (a) was chosen — the repository was made public.
 
 Key considerations:
 - Each GitHub Pages site per organization occupies one subdomain or the `orgname.github.io` root.
-- Multiple subdomains (e.g. `blog.example.com`, `docs.example.com`) require separate repositories — each repository is a separate GitHub Pages site.
 - HTTPS is enforced automatically by GitHub for custom domains.
 - When switching to a custom domain, the `base` path in `astro.config.mjs` must be updated (removed) and internal links adjusted. This is a one-time developer task (~15 minutes).
+
+> **⚠️ IMPORTANT: One repository = one domain/subdomain**
+>
+> GitHub Pages has a fundamental architectural limitation: **each repository can serve only one domain (or subdomain)**. There is no way to host multiple subdomains from a single repository.
+>
+> If your organization needs multiple subdomains (e.g. `blog.example.com`, `docs.example.com`, `support.example.com`), **each subdomain requires its own separate repository** with its own Astro project, its own `navigation.json`, its own GitHub Actions workflow, and its own content files. They do not share layouts, styles, or navigation.
+>
+> **What this means for planning:**
+> - A single corporate site at `www.example.com` — one repository (current setup) ✅
+> - Adding `blog.example.com` separately — a second repository, second project, separate maintenance ⚠️
+> - 5 subdomains = 5 repositories = 5× the maintenance effort ⚠️
+>
+> **Alternatives if multiple subdomains are needed:**
+> - Use subpaths instead (`example.com/blog/`, `example.com/docs/`) — works from a single repo ✅
+> - Use a different hosting platform (Netlify, Cloudflare Pages, Vercel) which can serve multiple paths from one project
+> - Use a monorepo with separate build outputs (advanced, requires custom CI/CD)
 
 ---
 
