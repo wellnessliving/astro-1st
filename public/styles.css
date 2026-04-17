@@ -1,4 +1,5 @@
 /* ===== WP-Style Corporate Theme ===== */
+html { color-scheme: light; }
 :root {
   --primary: #2563eb;
   --primary-dark: #1d4ed8;
