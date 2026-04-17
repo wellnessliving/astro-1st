@@ -83,7 +83,7 @@ Operational complexity factors:
 
 | # | Risk | Impact | Mitigation |
 |---|------|--------|-----------|
-| 1 | **Manager breaks the site** by invalid JSON or malformed Markdown | Site build fails, current version stays live, new changes don't appear | Documentation with templates provided; developers can revert commits in <5 min |
+| 1 | **Manager breaks the site** by invalid JSON or malformed Markdown | Site build fails, current version stays live, new changes don't appear | **AI-assisted mode (Claude Code / OpenCode):** AI validates JSON and runs `npm run build` before every commit — broken code never gets pushed. Manual mode: documentation with templates provided; developers can revert commits in <5 min |
 | 2 | **No staging/preview** — errors go live immediately | Visitors may briefly see broken content | Local preview available for advanced managers (VS Code + `npm run dev`); build failure prevents deployment of broken code |
 | 3 | **Vendor lock-in to GitHub** | Migration effort if GitHub changes pricing or policies | Astro generates standard HTML; site can be rehosted on any static hosting (Netlify, Cloudflare Pages, S3) with minimal effort |
 | 4 | **Public repository exposes content history** | Deleted or edited content remains visible in git history | Acceptable for marketing content; sensitive information should never be placed in the repository |

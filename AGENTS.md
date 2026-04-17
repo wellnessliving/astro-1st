@@ -137,6 +137,34 @@ Deploy is automatic: push to `main` → GitHub Actions runs build → uploads `d
 
 Workflow: `.github/workflows/deploy.yml` (uses actions v5/v6)
 
+## Content Safety Rules (MANDATORY)
+
+When creating or editing content files, you MUST follow these rules:
+
+### Before every commit:
+1. Run `npm run build` — verify 0 errors
+2. Validate JSON: `node -e "JSON.parse(require('fs').readFileSync('src/data/navigation.json','utf8')); console.log('JSON OK')"`
+3. Verify page count is >= previous count
+
+### navigation.json:
+- Valid JSON only — no trailing commas, no comments, no single quotes
+- Every `path` ends with `/`
+- Every `path` and child `path` must have a matching `.md` file
+- Items with `children` need both an overview file (`section.md`) and a folder (`section/`)
+- Last array item = CTA button — add new items before it
+
+### Markdown frontmatter:
+- Starts with `---` on line 1, ends with `---`
+- Required: `title`, `description`
+- Blog: also `pubDate` (`"YYYY-MM-DD"`), `author`, `category`
+- No tabs — spaces only. Wrap special values in quotes.
+
+### File naming:
+- Lowercase, hyphens only: `my-page.md` (no spaces, no underscores)
+- Path `/x/y/` → file `src/content/pages/x/y.md`
+
+### If build fails — do NOT commit. Fix first.
+
 ## Gotchas
 
 1. **BASE_URL has no trailing slash** — always normalize with `.replace(/\/?$/, '/')`

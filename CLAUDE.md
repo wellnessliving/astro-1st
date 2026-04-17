@@ -123,6 +123,38 @@ npm run preview      # Preview built site
 - **No trailing comma** in JSON arrays — breaks the build
 - **Documentation is bilingual:** Every doc file has an `.RU.md` counterpart
 
+## Content Safety Rules (MANDATORY)
+
+When creating or editing content files, you MUST follow these rules to prevent breaking the site:
+
+### Before every commit, ALWAYS:
+1. Run `npm run build` and verify it completes with 0 errors
+2. Check that the page count is equal to or greater than before your changes
+
+### navigation.json rules:
+- MUST be valid JSON — no trailing commas, no comments, no single quotes
+- Every `path` MUST end with `/` (e.g. `"/about/"`, not `"/about"`)
+- Every item with `children` MUST have a corresponding overview `.md` file (e.g. `"path": "/resources/"` requires `src/content/pages/resources.md`)
+- Every child `path` MUST have a corresponding `.md` file (e.g. `"/resources/guides/"` requires `src/content/pages/resources/guides.md`)
+- The LAST item in the array is always the CTA button — do not place new items after it
+- After editing, validate: `node -e "JSON.parse(require('fs').readFileSync('src/data/navigation.json','utf8')); console.log('JSON OK')"`
+
+### Markdown frontmatter rules:
+- MUST start with `---` on line 1 and end with `---` (no leading whitespace)
+- MUST include `title` and `description` fields
+- Blog posts MUST also include `pubDate` (format: `"YYYY-MM-DD"`), `author`, and `category`
+- No tabs in YAML — use spaces only
+- Wrap values with colons or special chars in quotes: `title: "What's New: Our Update"`
+
+### File naming rules:
+- Lowercase, hyphens only (no spaces, no underscores): `my-page.md`, not `My Page.md`
+- Must match the `path` in navigation.json: path `/services/scheduling/` → file `src/content/pages/services/scheduling.md`
+
+### If build fails:
+- Do NOT commit — fix the error first
+- Common causes: invalid JSON (missing comma/bracket), missing frontmatter delimiter, broken Markdown link syntax
+- Run `npm run build` again after fixing to confirm
+
 ## Known Issues & Gotchas
 
 1. `import.meta.env.BASE_URL` has no trailing slash — always normalize
