@@ -38,10 +38,35 @@ GitHub Pages on **free organization plans** only works with **public repositorie
 
 | Option | Cost | Tradeoff |
 |--------|------|----------|
-| **(a) Make the repository public** | Free | Website content (marketing text, blog posts) is visible to anyone on GitHub. No secrets or proprietary code are exposed. |
+| **(a) Make the repository public** | Free | See security warning below. |
 | **(b) Upgrade to GitHub Team plan** | $4/user/month | Repository stays private. GitHub Pages works with private repos on paid plans. |
 
-During implementation, option (a) was chosen — the repository was made public. This is the standard approach for marketing/corporate websites where the content is already publicly visible on the site itself.
+During implementation, option (a) was chosen — the repository was made public.
+
+> **⚠️ SECURITY WARNING — PUBLIC REPOSITORY**
+>
+> A public repository means **the entire source code, all content files, commit history, and every change ever made are permanently visible to anyone on the internet.** This includes:
+>
+> - **All Markdown files** — every page, blog post, draft, and deleted content (recoverable from git history)
+> - **Navigation structure** (`navigation.json`) — the full sitemap of the website
+> - **CSS and layout code** — the complete design/theme source
+> - **GitHub Actions workflows** — the deployment pipeline configuration
+> - **Commit messages and author info** — who changed what and when (names, email addresses)
+> - **Deleted or reverted content** — anything ever committed remains in git history forever, even after deletion
+> - **AI context files** (`CLAUDE.md`, `AGENTS.md`) — project architecture and conventions
+>
+> **What this means in practice:**
+> - Competitors can see your site structure, content strategy, and upcoming pages before they go live
+> - Search engines may index the raw repository content alongside your website
+> - Any accidentally committed secrets (API keys, passwords, internal URLs) become immediately and permanently public
+>
+> **NEVER place the following in the repository:**
+> - API keys, tokens, passwords, or credentials of any kind
+> - Internal company documents, financial data, or employee information
+> - Draft content that is confidential or embargo-sensitive
+> - Customer data, analytics keys, or third-party service credentials
+>
+> **If privacy is a concern, upgrade to GitHub Team ($4/user/month) to keep the repository private.** This is the recommended approach for any organization that considers its website content, structure, or edit history to be sensitive information.
 
 ---
 
