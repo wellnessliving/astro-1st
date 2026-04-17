@@ -145,9 +145,12 @@ Note: you need to place the image file in `public/images/` first (via GitHub web
 
 ## Tips
 
-1. **Always end with "Commit and push"** — otherwise changes stay local
+1. **Always end with "Build, commit and push"** — this ensures the site builds correctly before deploying. Example prompt:
+   > Build the site, and if there are no errors, commit and push.
 2. **Be specific about menu placement** — say "before Blog" or "after FAQ"
 3. **AI knows the rules** — it will create correct frontmatter, update navigation.json, and place files in the right folders
 4. **Review before push** — you can say "Show me what you changed" before committing
 5. **Undo mistakes** — say "Undo the last commit" or fix manually via GitHub web UI
 6. **Pull before starting** — if others made changes, say "Pull latest changes" first
+7. **Run build after any change** — even if you forget to ask, the AI should run `npm run build` automatically (it's in its rules). But it's good practice to include it in your prompt:
+   > Create a new page "Testimonials". Run npm run build to verify. If OK, commit and push.
