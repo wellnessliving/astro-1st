@@ -22,6 +22,50 @@ The AI reads `CLAUDE.md` / `AGENTS.md` and already knows the project structure, 
 
 ---
 
+## Alternative Setup — IDE / GUI (no command line)
+
+Prefer a visual tool over the terminal? Two paths, both use your **Claude.ai subscription** (Pro / Max / Team) — no Anthropic API key required.
+
+### Option A — VS Code or Cursor + Claude subscription
+
+1. Install one of:
+   - **VS Code** — [code.visualstudio.com](https://code.visualstudio.com/)
+   - **Cursor** — [cursor.com](https://cursor.com/) (VS Code fork with built-in AI)
+2. Install Git (see One-Time Setup above).
+3. Add Claude:
+   - **VS Code:** install the **Claude Code** extension from the Marketplace (search "Claude Code"), then sign in with your Claude.ai account.
+   - **Cursor:** open Settings → Models → sign in with your Claude.ai subscription (Cursor supports Anthropic login directly), or paste an Anthropic API key.
+4. Clone the repo through the built-in Git UI:
+   - Press `Ctrl/Cmd + Shift + P` → "Git: Clone" → paste `https://github.com/wellnessliving/astro-1st.git`.
+5. Open the project folder, open the AI chat panel (VS Code: Claude Code side panel; Cursor: `Ctrl/Cmd + L`), and start prompting exactly as in the examples below. Commit and push through the IDE's Git panel — or tell the AI "commit and push" and it will do it.
+
+The AI reads `CLAUDE.md` / `AGENTS.md` automatically and follows the same project rules as the CLI version.
+
+### Option B — Claude Desktop (GUI app) + Claude subscription
+
+For managers who want the cleanest experience with no developer tooling visible.
+
+1. Install the **Claude Desktop** app — [claude.ai/download](https://claude.ai/download) (macOS / Windows).
+2. Sign in with your **Claude.ai Pro / Max / Team** subscription.
+3. Install **GitHub Desktop** — [desktop.github.com](https://desktop.github.com/) — and clone `wellnessliving/astro-1st` through its UI. This gives you a local folder with the project.
+4. In Claude Desktop → **Settings → Developer → Edit Config** → enable the **Filesystem MCP** server pointing at the cloned folder. (One-time setup; a developer can do this in ~5 minutes.)
+5. In a Claude Desktop chat, Claude can now read and write files inside that folder. Prompt it using the same examples below.
+6. After Claude makes changes, open **GitHub Desktop** → review the diff → click **Commit to main** → click **Push origin**. The site rebuilds in ~2 minutes.
+
+**Limitation:** Claude Desktop does not run `npm run build` or git commands itself. Ask a developer to verify the build locally for non-trivial changes, or trust GitHub Actions — if the build fails, the old site stays live.
+
+### Quick comparison
+
+| Path | Best for | Requires developer for setup? |
+|---|---|---|
+| CLI (`claude` / `opencode`) | Tech-comfortable managers; fastest | No — 5 min install |
+| VS Code / Cursor + Claude sub | Visual editor + Git UI in one place | No — ~10 min install |
+| Claude Desktop + GitHub Desktop + MCP | Non-technical managers | **Yes** — one-time MCP config (~5 min) |
+
+All three paths use the same `CLAUDE.md` / `AGENTS.md` rules, so your prompts work identically across them.
+
+---
+
 ## Daily Workflow
 
 ```
