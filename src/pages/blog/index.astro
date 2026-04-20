@@ -10,6 +10,15 @@ const posts = Object.entries(modules).map(([filepath, post]: [string, any]) => (
 posts.sort((a, b) => new Date(b.frontmatter.date || b.frontmatter.pubDate || 0).getTime() - new Date(a.frontmatter.date || a.frontmatter.pubDate || 0).getTime());
 
 const categories = ['All', 'Technology', 'Business', 'Wellness'];
+const categoryCounts = categories.reduce<Record<string, number>>((acc, category) => {
+  if (category === 'All') {
+    acc[category] = posts.length;
+    return acc;
+  }
+
+  acc[category] = posts.filter((post) => (post.frontmatter.category || 'General') === category).length;
+  return acc;
+}, {});
 const recentPosts = posts.slice(0, 5);
 ---
 <Base title="Blog">
@@ -70,7 +79,7 @@ const recentPosts = posts.slice(0, 5);
               {categories.map((cat) => (
                 <li>
                   <a href="#">{cat}</a>
-                  <span class="widget-count">{cat === 'All' ? posts.length : Math.floor(Math.random() * 3 + 1)}</span>
+                  <span class="widget-count">{categoryCounts[cat]}</span>
                 </li>
               ))}
             </ul>

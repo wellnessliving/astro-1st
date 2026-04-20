@@ -27,6 +27,27 @@ cd astro-1st
 npm install
 ```
 
+### 2.1 Configure GitHub Access for `git push`
+
+The repository is public, so anyone can clone/read it. To push changes, your GitHub account must have **write access** to this repository in the `wellnessliving` organization.
+
+- Usually this means your account is a member of the organization with the required permissions.
+- It can also be granted via outside-collaborator access with write permission.
+
+Set remote URL with a Personal Access Token (PAT):
+
+```bash
+git remote set-url origin https://ghpXXXX@github.com/wellnessliving/astro-1st.git
+```
+
+Or (recommended) use GitHub CLI/device login so token is not stored in plain text in command history:
+
+```bash
+gh auth login
+```
+
+> Security note: never commit or share your real token (`ghp...`). If leaked, revoke it immediately in GitHub settings.
+
 ### 3. Open in VS Code
 
 ```bash
